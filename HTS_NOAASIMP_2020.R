@@ -10,6 +10,7 @@ library(data.table)
 library(dplyr)
 library(readxl)
 library(writexl)
+#library(writexlsx)
 library(ggplot2)
 library(zoo)
 library(stringr)
@@ -501,6 +502,7 @@ overview_results_table <- data.frame("Case_Study_Species" = "Atlantic & Pacific 
 
 ########### Tables in Appendices
 
+
 ######## Appendix 2: Top US Imports of Non-SIMP-listed HTS for Seafood ######
 appendix2 <- htstradedata_joined_simp %>%
   filter(year == 2019, Duplicate_HTS == 0, HTS_SIMP_Listed==0) %>%
@@ -639,7 +641,69 @@ appendix3_5b_tuna <- htstradedata_joined_simp %>%
 rm(summary_tuna)
 
 
+############### Write all final data tables to tabs in one Excel file ##########
+sheets <- list("R_SIMP_Overview" = yearly_summary_SIMP,
+               "R_cod" = cod_results_table,
+               "R_abc" = abc_results_table,
+               "R_rkc" = rkc_results_table,
+               "R_nrs" = nrs_results_table,
+               "R_tuna" = tuna_results_table,
+               "R_CaseStudy_results" = overview_results_table,
+               "A2" = appendix2,
+               "A3_1a_cod" = appendix3_1a_cod,
+               "A3_1b_cod" = appendix3_1b_cod,
+               "A3_1c_cod" = appendix3_1c_cod,
+               "A3_1d_cod" = appendix3_1d_cod,
+               "A3_2a_abc" = appendix3_2a_abc,
+               "A3_2b_abc" = appendix3_2b_abc, 
+               "A3_3a_rkc" = appendix3_3a_rkc,
+               "A3_3b_rkc" = appendix3_3b_rkc, 
+               "A3_4a_nrs" = appendix3_4a_nrs,
+               "A3_4c_nrs" = appendix3_4c_nrs, 
+               "A3_4d_nrs" = appendix3_4d_nrs,
+               "A3_5a_tuna" = appendix3_5a_tuna,
+               "A3_5b_tuna" = appendix3_5b_tuna)
+write_xlsx(sheets, 
+paste0(dataPath, "OutputFiles\\Final_SIMP_AnalysisTables.xlsx"))
+
+rm(yearly_summary_SIMP, 
+   cod_results_table, 
+   abc_results_table, 
+   rkc_results_table, 
+   nrs_results_table,
+   tuna_results_table, 
+   overview_results_table, 
+   appendix2, 
+   appendix3_1a_cod, 
+   appendix3_1b_cod, 
+   appendix3_1c_cod, 
+   appendix3_1d_cod, 
+   appendix3_2a_abc, 
+   appendix3_2b_abc, 
+   appendix3_3a_rkc, 
+   appendix3_3b_rkc, 
+   appendix3_4a_nrs, 
+   appendix3_4c_nrs, 
+   appendix3_4d_nrs, 
+   appendix3_5a_tuna, 
+   appendix3_5b_tuna)
+
+
+
+######## End of SIMP code #############
+
 ########### Testing out figures ##################
+
+
+
+
+
+
+SIMP_ports_summary <- htstradedata_joined_simp %>%
+  filter(Duplicate_HTS == 0, year == "2019") %>%
+  mutate(HTS_SIMP = ifelse(HTS_SIMP_Listed =="2", 1, HTS_SIMP_Listed)) %>%
+  group_by(district)%>%
+  summarize(Value = sum(as.numeric(gen_val_mo)))
 
 year_species_SIMP_summary <- htstradedata_joined_simp %>%
   group_by(year, SIMP_Target, HTS_SIMP_Listed)%>%
@@ -695,7 +759,7 @@ write_xlsx(
 )
 
 
-#### End of SIMP code #######
+
 
 
 # htstradedata <- join_hts10 %>%
@@ -727,6 +791,8 @@ htstradedata <- htstradedata %>%
 #write out combined data file for all years
 fwrite(htstradedata, 
        paste0(dataPath, "OutputFiles\\htstradedata_laceydeclarations.csv"), dateTimeAs = "write.csv")
+
+
 
 
 
