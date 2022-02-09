@@ -59,17 +59,17 @@ fwrite(htstradedata,
 #read in simp_req filter as excel file
 simp_req <- read_excel(paste0(dataPath, "RawDataFiles\\PreprocessedFilterData\\FILTER_SIMP_SpeciesTargets_CloseSubs_HTS_28Feb2021.xlsx")) %>%
   mutate(SIMP_RequiredBeginningDate = as.POSIXct(SIMP_RequiredBeginningDate, format = "%m/%d/%Y"), 
-         commodity = as.character(commodity))
+         I_COMMODITY = as.character(I_COMMODITY))
 
 ########join the pre-processed table that specifies HTS codes and species indicating whether HTS is SIMP-listed to the trade data
 # create columns in hts trade data representing 2, 4, 6, 8, and 10 digit codes
 htstradedata <- htstradedata %>%
-  mutate(HTS2 = substr(commodity, 1, 2),
-         HTS4 = substr(commodity, 1, 4),
-         HTS6 = substr(commodity, 1, 6),
-         HTS8 = substr(commodity, 1, 8),
-         HTS10 = substr(commodity, 1, 10)) %>%
-  select(-commodity)
+  mutate(HTS2 = substr(I_COMMODITY, 1, 2),
+         HTS4 = substr(I_COMMODITY, 1, 4),
+         HTS6 = substr(I_COMMODITY, 1, 6),
+         HTS8 = substr(I_COMMODITY, 1, 8),
+         HTS10 = substr(I_COMMODITY, 1, 10)) %>%
+  select(-I_COMMODITY)
 
 # join all 10-digit hts codes to 10 digit codes in table with SIMP HTS
 htstradedata_joined_simp <- left_join(htstradedata, simp_req, by = c("HTS10" = "commodity"))
