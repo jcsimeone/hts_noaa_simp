@@ -3,7 +3,7 @@
 
 
 # Add key to .Renviron
-Sys.setenv(CENSUS_KEY="6a6b224a3057a174ebd5cd67109f2f4800d270a9")
+Sys.setenv(CENSUS_KEY="") #insert US Census key 
 # Reload .Renviron
 readRenviron("~/.Renviron")
 # Check to see that the expected key is output in your R console
