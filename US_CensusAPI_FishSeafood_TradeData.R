@@ -28,7 +28,7 @@ library(janitor)
 #library(lubridate)
 
 ########### Practice using cencusapi package to retrieve data from US Census Int'l Trade import data, 
-#Abandonded because if interested in quantity and therefore unit variable, units comes in as NAs rather than actual units
+#Abandonded because if interested in quantity and therefore unit variable, units come in as NAs rather than actual units
 # intltrade_vars <- listCensusMetadata(
 #   name = "timeseries/intltrade/imports/hs", 
 #   type = "variables")
@@ -76,7 +76,7 @@ df_batch_raw <- as.data.frame(batch_raw)
 df_batch_raw_col <- row_to_names(df_batch_raw, row_number =1)
 
 
-########Census API Retrieval: Loop to bring in batches of HTS covering wood and forest products for 2019, 2020, 2021
+########Census API Retrieval: Loop to bring in batches of HTS covering specified products for the specified years indicated below
 
 #files <- list.files(inputPath)
 
