@@ -3,7 +3,9 @@
 
 
 # Add key to .Renviron
-Sys.setenv(CENSUS_KEY="") #insert US Census key 
+API_key = "" #insert US Census key 
+Sys.setenv(CENSUS_KEY=API_key) 
+
 # Reload .Renviron
 readRenviron("~/.Renviron")
 # Check to see that the expected key is output in your R console
@@ -63,7 +65,7 @@ library(janitor)
 
 
 ######### Test calling Census api through R (using httr) and convert matrix to data frame w/ first row as column headings
-url <-"https://api.census.gov/data/timeseries/intltrade/imports/hs?key=6a6b224a3057a174ebd5cd67109f2f4800d270a9&get=MONTH%2CI_COMMODITY_LDESC%2CDISTRICT%2CCTY_CODE%2CCTY_NAME%2CDIST_NAME%2CGEN_VAL_MO%2CCON_VAL_MO%2CGEN_QY1_MO%2CCON_QY1_MO%2CUNIT_QY1&YEAR=2021&COMM_LVL=HS10&I_COMMODITY=03061440%2A"
+url <-"https://api.census.gov/data/timeseries/intltrade/imports/hs?key=",API_key,"&get=MONTH%2CI_COMMODITY_LDESC%2CDISTRICT%2CCTY_CODE%2CCTY_NAME%2CDIST_NAME%2CGEN_VAL_MO%2CCON_VAL_MO%2CGEN_QY1_MO%2CCON_QY1_MO%2CUNIT_QY1&YEAR=2021&COMM_LVL=HS10&I_COMMODITY=03061440%2A"
 batch <- httr::GET(url)
 #cont_raw <- httr::content(batch)
 #str(cont_raw, max.level = 3, list.len = 4)
@@ -92,7 +94,7 @@ for(hts in fish_hts_to_query$HS){
     i=i+1
     
     ######### Batch to call api and convert matrix to data frame w/ first row as column headings
-    url <- paste0("https://api.census.gov/data/timeseries/intltrade/imports/hs?key=6a6b224a3057a174ebd5cd67109f2f4800d270a9&get=MONTH%2CI_COMMODITY_LDESC%2CDISTRICT%2CCTY_CODE%2CCTY_NAME%2CDIST_NAME%2CGEN_VAL_MO%2CCON_VAL_MO%2CGEN_QY1_MO%2CCON_QY1_MO%2CUNIT_QY1&",
+    url <- paste0("https://api.census.gov/data/timeseries/intltrade/imports/hs?key=",API_key,"&get=MONTH%2CI_COMMODITY_LDESC%2CDISTRICT%2CCTY_CODE%2CCTY_NAME%2CDIST_NAME%2CGEN_VAL_MO%2CCON_VAL_MO%2CGEN_QY1_MO%2CCON_QY1_MO%2CUNIT_QY1&",
                   "YEAR=",year,"&COMM_LVL=HS10&I_COMMODITY=",hts,"%2A")
     print(url)
     batch <- httr::GET(url)
